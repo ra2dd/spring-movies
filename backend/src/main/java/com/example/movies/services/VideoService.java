@@ -1,5 +1,6 @@
 package com.example.movies.services;
 
+import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
 import com.example.movies.models.Video;
 import com.example.movies.repositories.VideoRepository;
@@ -14,14 +15,25 @@ public class VideoService {
     private final S3Service s3Service;
     private final VideoRepository videoRepository;
 
-    public void uploadVideo(MultipartFile multipartFile) {
+    public UploadVideoResponse uploadVideo(MultipartFile multipartFile) {
         // upload file to storage and save video data to database
 
         String videoUrl = s3Service.uploadFile(multipartFile);
         var video = new Video();
         video.setVideoUrl(videoUrl);
 
-        videoRepository.save(video);
+        var savedVideo = videoRepository.save(video);
+        return new UploadVideoResponse(savedVideo.getId(), savedVideo.getVideoUrl());
+    }
+
+    public String uploadThumbnail(MultipartFile file, String videoId) {
+        Video editedVideo = getVideoById(videoId);
+        String thumbnailUrl = s3Service.uploadFile(file);
+
+        editedVideo.setThumbnailUrl(thumbnailUrl);
+        videoRepository.save(editedVideo);
+
+        return thumbnailUrl;
     }
 
     public VideoDto editVideo(VideoDto videoDto) {
@@ -42,16 +54,6 @@ public class VideoService {
         // Save video to the database
         videoRepository.save(editedVideo);
         return videoDto;
-    }
-
-    public String uploadThumbnail(MultipartFile file, String videoId) {
-        Video editedVideo = getVideoById(videoId);
-        String thumbnailUrl = s3Service.uploadFile(file);
-
-        editedVideo.setThumbnailUrl(thumbnailUrl);
-        videoRepository.save(editedVideo);
-
-        return thumbnailUrl;
     }
 
     Video getVideoById(String videoId) {
