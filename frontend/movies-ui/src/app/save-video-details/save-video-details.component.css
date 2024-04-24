@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+}
+
+mat-form-field, input, button, label {
+  display: block;
+}
