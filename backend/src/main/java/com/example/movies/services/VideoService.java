@@ -2,6 +2,7 @@ package com.example.movies.services;
 
 import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
+import com.example.movies.mappers.VideoMapper;
 import com.example.movies.models.Video;
 import com.example.movies.repositories.VideoRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,14 @@ public class VideoService {
         return new UploadVideoResponse(savedVideo.getId(), savedVideo.getVideoUrl());
     }
 
-    public String uploadThumbnail(MultipartFile file, String videoId) {
+    public UploadVideoResponse uploadThumbnail(MultipartFile file, String videoId) {
         Video editedVideo = getVideoById(videoId);
         String thumbnailUrl = s3Service.uploadFile(file);
 
         editedVideo.setThumbnailUrl(thumbnailUrl);
         videoRepository.save(editedVideo);
 
-        return thumbnailUrl;
+        return new UploadVideoResponse(editedVideo.getId(), editedVideo.getThumbnailUrl());
     }
 
     public VideoDto editVideo(VideoDto videoDto) {
@@ -59,5 +60,10 @@ public class VideoService {
     Video getVideoById(String videoId) {
         return videoRepository.findById(videoId).orElseThrow(
                 () -> new IllegalArgumentException("Cannot find video by id: " + videoId));
+    }
+
+    public VideoDto getVideoDetails(String videoId) {
+        Video savedVideo = getVideoById(videoId);
+        return VideoMapper.mapToVideoDto(savedVideo);
     }
 }
