@@ -41,7 +41,7 @@
     </mat-chip-grid>
   </mat-form-field>
 
-  <button type="submit" mat-flat-button color="primary">
+  <button type="submit" mat-flat-button color="primary" (click)="saveDetails()">
     Save details
   </button>
 </form>
@@ -54,4 +54,6 @@
       Save thumbnail
     </button>
   </div>
+
+  <app-video-player [videoUrl]="videoUrl" />
 </div>

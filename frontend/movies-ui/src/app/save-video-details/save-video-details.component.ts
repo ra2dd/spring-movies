@@ -10,6 +10,9 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { VideoService } from '../video.service';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VideoPlayerComponent } from '../video-player/video-player.component';
+import { VideoDto, VideoDtoDetailsForm } from '../videoDto';
 
 @Component({
   selector: 'app-save-video-details',
@@ -22,6 +25,7 @@ import { ActivatedRoute } from '@angular/router';
     MatButtonModule,
     MatChipsModule,
     MatIconModule,
+    VideoPlayerComponent,
   ],
   providers: [
     VideoService
@@ -44,10 +48,17 @@ export class SaveVideoDetailsComponent {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   announcer = inject(LiveAnnouncer);
 
-  tags: String[] = [];
+  tags: string[] = [];
+  videoUrl = "";
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(
+    private activatedRoute: ActivatedRoute, 
+    private _snackBar: MatSnackBar
+  ) {
     this.videoId = this.activatedRoute.snapshot.params["videoId"];
+    this.videoService.getVideoData(this.videoId).subscribe(data => {
+      this.videoUrl = data.videoUrl;
+    })
   }
 
   add(event: MatChipInputEvent): void {
@@ -62,7 +73,7 @@ export class SaveVideoDetailsComponent {
     event.chipInput!.clear();
   }
 
-  remove(tag: String): void {
+  remove(tag: string): void {
     const index = this.tags.indexOf(tag);
 
     if (index >= 0) {
@@ -73,7 +84,7 @@ export class SaveVideoDetailsComponent {
     }
   }
 
-  edit(tag: String, event: MatChipEditedEvent) {
+  edit(tag: string, event: MatChipEditedEvent) {
     const value = event.value.trim();
 
     // Remove element if it no longer has a name
@@ -107,6 +118,21 @@ export class SaveVideoDetailsComponent {
       .subscribe(data => {
         console.log(data);
         // show a notification (upload successfull)
+        this._snackBar.open('Thumbnail upload successfull.', "Ok");
       })
+  }
+
+  saveDetails() {
+    const videoDetails: VideoDtoDetailsForm = {
+      id: this.videoId,
+      title: this.saveVideoDetailsForm.value.title ?? '',
+      description: this.saveVideoDetailsForm.value.description ?? '',
+      tags: this.tags,
+      videoStatus: this.saveVideoDetailsForm.value.videoStatus ?? '',
+    }
+
+    this.videoService.putDetails(videoDetails).subscribe(data => {
+      this._snackBar.open("Video details saved successfully", "Ok");
+    })
   }
 }
