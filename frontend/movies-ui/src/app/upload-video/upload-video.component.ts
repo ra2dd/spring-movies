@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry, NgxFileDropModule } from 'ngx-file-drop';
@@ -12,7 +11,6 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     FormsModule,
-    HttpClientModule,
     NgxFileDropModule,
     CommonModule,
     MatButtonModule
@@ -88,6 +86,8 @@ export class UploadVideoComponent {
 
     this.fileEntry.file(file => {
       this.videoService.postVideo(file).subscribe(data => {
+        // add timeout after video upload, to wait for saved changes in backend before fetching new data
+        setTimeout('', 500);
         this.router.navigateByUrl("/save-video-details/" + data.videoId);
       });
     });
