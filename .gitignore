@@ -35,6 +35,7 @@ build/
 
 ### Angular ###
 .angular
+**/environments
 
 # Compiled output
 /dist

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +9,21 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     RouterOutlet,
     HeaderComponent,
-    HttpClientModule,
    ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
   title = 'movies-ui';
+  private readonly oidcSecurityService = inject(OidcSecurityService);
+
+  ngOnInit(): void {
+    this.oidcSecurityService
+      .checkAuth()
+      .subscribe((loginResponse: LoginResponse) => {
+        const { isAuthenticated, userData, accessToken, idToken, configId } = loginResponse;
+        console.log('app is authenticated ', isAuthenticated);
+      });
+  }
 }
