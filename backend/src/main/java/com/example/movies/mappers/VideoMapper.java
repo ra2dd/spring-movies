@@ -7,6 +7,7 @@ public class VideoMapper {
     public static VideoDto mapToVideoDto(Video video) {
 
         return VideoDto.builder()
+                .id(video.getId())
                 .title(video.getTitle())
                 .description(video.getDescription())
                 .userId(video.getUserId())
