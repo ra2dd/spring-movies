@@ -51,15 +51,15 @@ export class SaveVideoDetailsComponent {
   tags: string[] = [];
   videoUrl = "";
 
-  constructor(
-    private activatedRoute: ActivatedRoute, 
-    private _snackBar: MatSnackBar
-  ) {
-    this.videoId = this.activatedRoute.snapshot.params["videoId"];
-    this.videoService.getVideoData(this.videoId).subscribe(data => {
-      this.videoUrl = data.videoUrl;
-    })
-  }
+    constructor(
+      private activatedRoute: ActivatedRoute, 
+      private _snackBar: MatSnackBar
+    ) {
+      this.videoId = this.activatedRoute.snapshot.params["videoId"];
+      this.videoService.getVideoData(this.videoId).subscribe(data => {
+        this.videoUrl = data.videoUrl;
+      })
+    }
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();

@@ -5,7 +5,7 @@ export interface VideoDto {
   userId: string;
   likes: number;
   dislikes: number;
-  tags: Set<string> | string[];
+  tags: string[];
   videoUrl: string;
   videoStatus: VideoStatus | string;
   viewCount: number;
@@ -17,7 +17,7 @@ export interface VideoDtoDetailsForm {
   id: string;
   title: string;
   description: string;
-  tags: Set<string> | string[];
+  tags: string[];
   videoStatus: VideoStatus | string;
 }
 

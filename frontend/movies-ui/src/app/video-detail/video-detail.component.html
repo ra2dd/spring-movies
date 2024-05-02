@@ -1,0 +1,15 @@
+<div class="player-ctn-left">
+  <app-video-player *ngIf="videoUrl" [videoUrl]="videoUrl"/>
+
+  <section>
+    <h2>{{ title }}</h2>
+    <p>{{ description }}</p>
+    <ul>
+      <li *ngFor="let tag of tags">{{ tag }}</li>
+    </ul>
+  </section>  
+</div>
+
+<aside class="sidebar-right">
+  <p>Other videos</p>
+</aside>
