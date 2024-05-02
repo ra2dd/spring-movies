@@ -10,5 +10,9 @@ export const authConfig: PassedInitialConfig = {
             responseType: 'code',
             silentRenew: true,
             useRefreshToken: true,
+            secureRoutes: [environment.interceptorSecureRoute, environment.interceptorSecureRoute2],
+            customParamsAuthRequest: {
+              audience: environment.interceptorAudience,
+            }
         }
 }
