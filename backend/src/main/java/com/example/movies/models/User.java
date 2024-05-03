@@ -1,6 +1,7 @@
 package com.example.movies.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Document(value = "User")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -20,6 +22,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String emailAddress;
+    private String sub;
     private Set<String> subscribedTo;
     private Set<String> subscribers;
     private List<String> videoHistory;
