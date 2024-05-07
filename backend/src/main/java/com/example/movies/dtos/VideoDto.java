@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @Builder
@@ -20,7 +21,7 @@ public class VideoDto {
     private String description;
     private String userId;
     private Integer likes;
-    private Integer dislikes;
+//    private Integer dislikes;
     private Set<String> tags;
     private String videoUrl;
     private VideoStatus videoStatus;

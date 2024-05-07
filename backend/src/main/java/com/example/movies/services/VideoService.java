@@ -4,6 +4,7 @@ import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
 import com.example.movies.mappers.VideoMapper;
 import com.example.movies.models.Video;
+import com.example.movies.repositories.UserRepository;
 import com.example.movies.repositories.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class VideoService {
 
     private final S3Service s3Service;
+    private final UserService userService;
+
     private final VideoRepository videoRepository;
+    private final UserRepository userRepository;
 
     public UploadVideoResponse uploadVideo(MultipartFile multipartFile) {
         // upload file to storage and save video data to database
@@ -65,5 +69,23 @@ public class VideoService {
     public VideoDto getVideoDetails(String videoId) {
         Video savedVideo = getVideoById(videoId);
         return VideoMapper.mapToVideoDto(savedVideo);
+    }
+
+    public VideoDto likeVideo(String videoId) {
+        // Get video by id
+        Video videoById = getVideoById(videoId);
+
+
+        // if video is already liked, remove a like
+        if (userService.isVideoAlreadyLiked(videoId)) {
+           videoById.decrementLikes();
+           userService.removeLikedVideoFromUser(videoId);
+        } else {
+            videoById.incrementLikes();
+            userService.addLikedVideoToUser(videoId);
+        }
+
+        videoRepository.save(videoById);
+        return VideoMapper.mapToVideoDto(videoById);
     }
 }

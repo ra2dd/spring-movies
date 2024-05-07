@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -48,8 +50,8 @@ public class UserService {
             // Save user details to database
             // TODO: map givenName, familyName and photo
             User user = User.builder()
+                    .id(userInfoDto.getSub())
                     .emailAddress(userInfoDto.getName())
-                    .sub(userInfoDto.getSub())
                     .build();
 
             userRepository.save(user);
@@ -58,5 +60,33 @@ public class UserService {
             System.out.println(
                     "Error occurred while sending request with bearer token to Auth provider");
         }
+    }
+
+    public User getCurrentUser() {
+        Jwt jwt = (Jwt) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String sub = jwt.getClaim("sub");
+        return userRepository.findById(sub).orElseThrow(() ->
+                new IllegalArgumentException("Cannot find user with id - " + sub));
+    }
+
+    public void addLikedVideoToUser(String videoId) {
+        User currentUser = getCurrentUser();
+        currentUser.addVideoToLikedVideos(videoId);
+        userRepository.save(currentUser);
+    }
+
+    public void removeLikedVideoFromUser(String videoId) {
+        User currentUser = getCurrentUser();
+        currentUser.removeVideoFromLikedVideos(videoId);
+        userRepository.save(currentUser);
+    }
+
+    public boolean isVideoAlreadyLiked(String videoId) {
+        return getCurrentUser().getLikedVideos().stream().anyMatch(
+                likedVideo -> likedVideo.equals(videoId));
     }
 }

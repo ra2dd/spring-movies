@@ -40,6 +40,13 @@ public class VideoController {
         return videoService.getVideoDetails(videoId);
     }
 
+    @PostMapping("/{videoId}/like")
+    @ResponseStatus(HttpStatus.OK)
+    public VideoDto likeVideo(@PathVariable String videoId) {
+        return videoService.likeVideo(videoId);
+    }
+
+
     @GetMapping
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Test");
