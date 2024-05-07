@@ -20,11 +20,12 @@ public class User {
 
     @Id
     private String id;
+    private String username;
     private String firstName;
     private String lastName;
     private String emailAddress;
-    private Set<String> subscribedTo;
-    private Set<String> subscribers;
+    private Set<String> subscribedTo = ConcurrentHashMap.newKeySet();
+    private Set<String> subscribers = ConcurrentHashMap.newKeySet();
     private Set<String> videoHistory = ConcurrentHashMap.newKeySet();
     private Set<String> likedVideos = ConcurrentHashMap.newKeySet();
 //    private Set<String> dislikedVideos;
@@ -43,5 +44,21 @@ public class User {
 
     public void addVideoToVideoHistory(String videoId) {
         videoHistory.add(videoId);
+    }
+
+    public void addSubscribedTo(String username) {
+        subscribedTo.add(username);
+    }
+
+    public void removeFromSubscribedTo(String username) {
+        subscribedTo.remove(username);
+    }
+
+    public void addSubscribers(String username) {
+        subscribers.add(username);
+    }
+
+    public void removeFromSubscribers(String username) {
+        subscribers.remove(username);
     }
 }

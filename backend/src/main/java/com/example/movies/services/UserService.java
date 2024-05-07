@@ -51,6 +51,7 @@ public class UserService {
             // TODO: map givenName, familyName and photo
             User user = User.builder()
                     .id(userInfoDto.getSub())
+                    .username(userInfoDto.getNickname())
                     .emailAddress(userInfoDto.getName())
                     .build();
 
@@ -94,5 +95,27 @@ public class UserService {
         User currentUser = getCurrentUser();
         currentUser.addVideoToVideoHistory(videoId);
         userRepository.save(currentUser);
+    }
+
+    public boolean doUserAlreadySubscribed(User subscriber, User subbedTo) {
+        return subscriber.getSubscribedTo().stream().anyMatch(
+                subscribedTo -> subscribedTo.equals(subbedTo.getId())
+        );
+    }
+
+    public void subscribeUser(String username) {
+        User currentUser = getCurrentUser();
+        User beingSubbedToUser = userRepository.findByUsername(username);
+
+        if (doUserAlreadySubscribed(currentUser, beingSubbedToUser)) {
+            beingSubbedToUser.removeFromSubscribers(currentUser.getId());
+            currentUser.removeFromSubscribedTo(beingSubbedToUser.getId());
+        } else {
+            beingSubbedToUser.addSubscribers(currentUser.getId());
+            currentUser.addSubscribedTo(beingSubbedToUser.getId());
+        }
+
+        userRepository.save(currentUser);
+        userRepository.save(beingSubbedToUser);
     }
 }
