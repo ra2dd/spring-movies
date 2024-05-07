@@ -37,4 +37,8 @@ export class VideoService {
   getVideoData(videoId: string): Observable<VideoDto> {
     return this.httpClient.get<VideoDto>("http://localhost:8080/api/videos/" + videoId);
   }
+
+  postViewed(videoId: string): Observable<number> {
+    return this.httpClient.post<number>(`http://localhost:8080/api/videos/${videoId}/viewed`, null);
+  }
 }

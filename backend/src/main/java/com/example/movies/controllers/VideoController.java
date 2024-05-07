@@ -46,6 +46,11 @@ public class VideoController {
         return videoService.likeVideo(videoId);
     }
 
+    @PostMapping("/{videoId}/viewed")
+    @ResponseStatus(HttpStatus.OK)
+    public Integer videoViewed(@PathVariable String videoId) {
+        return videoService.makeVideoViewed(videoId);
+    }
 
     @GetMapping
     public ResponseEntity<String> test() {

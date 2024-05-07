@@ -16,7 +16,7 @@ public class VideoMapper {
                 .tags(video.getTags())
                 .videoUrl(video.getVideoUrl())
                 .videoStatus(video.getVideoStatus())
-                .viewCount(video.getViewCount())
+                .viewCount(video.getViewCount().get())
                 .thumbnailUrl(video.getThumbnailUrl())
                 .commentList(video.getCommentList())
                 .build();

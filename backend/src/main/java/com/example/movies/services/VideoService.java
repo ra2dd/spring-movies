@@ -71,6 +71,7 @@ public class VideoService {
         return VideoMapper.mapToVideoDto(savedVideo);
     }
 
+
     public VideoDto likeVideo(String videoId) {
         // Get video by id
         Video videoById = getVideoById(videoId);
@@ -87,5 +88,21 @@ public class VideoService {
 
         videoRepository.save(videoById);
         return VideoMapper.mapToVideoDto(videoById);
+    }
+
+
+    /**
+     * Increments video view count and adds video to user video history
+     * @param videoId
+     * @return Incremented Video viewCount
+     */
+    public Integer makeVideoViewed(String videoId) {
+
+        Video videoById = getVideoById(videoId);
+        videoById.incrementViewCount();
+        videoRepository.save(videoById);
+
+        userService.addVideoToUserVideoHistory(videoId);
+        return VideoMapper.mapToVideoDto(videoById).getViewCount();
     }
 }

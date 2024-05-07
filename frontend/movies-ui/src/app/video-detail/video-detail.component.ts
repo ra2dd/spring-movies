@@ -21,6 +21,7 @@ export class VideoDetailComponent {
   description: string = '';
   tags: string[] = [];
   videoUrl: string = '';
+  viewCount: number = 0;
 
   videoService = inject(VideoService);
 
@@ -34,6 +35,9 @@ export class VideoDetailComponent {
       // @ts-ignore
       this.tags = data.tags;
       this.videoUrl = data.videoUrl;
+    })
+    this.videoService.postViewed(this.videoId).subscribe(data => {
+      this.viewCount = data;
     })
   }
 }

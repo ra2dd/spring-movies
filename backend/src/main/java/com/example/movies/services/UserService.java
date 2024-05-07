@@ -89,4 +89,10 @@ public class UserService {
         return getCurrentUser().getLikedVideos().stream().anyMatch(
                 likedVideo -> likedVideo.equals(videoId));
     }
+
+    public void addVideoToUserVideoHistory(String videoId) {
+        User currentUser = getCurrentUser();
+        currentUser.addVideoToVideoHistory(videoId);
+        userRepository.save(currentUser);
+    }
 }

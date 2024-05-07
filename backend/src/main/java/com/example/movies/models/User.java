@@ -25,7 +25,7 @@ public class User {
     private String emailAddress;
     private Set<String> subscribedTo;
     private Set<String> subscribers;
-    private List<String> videoHistory;
+    private Set<String> videoHistory = ConcurrentHashMap.newKeySet();
     private Set<String> likedVideos = ConcurrentHashMap.newKeySet();
 //    private Set<String> dislikedVideos;
 
@@ -39,5 +39,9 @@ public class User {
 
     public void removeVideoFromLikedVideos(String videoId) {
         likedVideos.remove(videoId);
+    }
+
+    public void addVideoToVideoHistory(String videoId) {
+        videoHistory.add(videoId);
     }
 }
