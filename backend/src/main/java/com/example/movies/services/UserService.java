@@ -118,4 +118,11 @@ public class UserService {
         userRepository.save(currentUser);
         userRepository.save(beingSubbedToUser);
     }
+
+    public boolean doUserLikedVideo(String videoId) {
+        User currentUser = getCurrentUser();
+        return currentUser.getLikedVideos().stream().anyMatch(
+                likedVideoId -> likedVideoId.equals(videoId)
+        );
+    }
 }

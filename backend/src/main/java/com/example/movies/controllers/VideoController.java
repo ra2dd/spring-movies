@@ -42,7 +42,7 @@ public class VideoController {
 
     @PostMapping("/{videoId}/like")
     @ResponseStatus(HttpStatus.OK)
-    public VideoDto likeVideo(@PathVariable String videoId) {
+    public Integer likeVideo(@PathVariable String videoId) {
         return videoService.likeVideo(videoId);
     }
 

@@ -72,7 +72,7 @@ public class VideoService {
     }
 
 
-    public VideoDto likeVideo(String videoId) {
+    public Integer likeVideo(String videoId) {
         // Get video by id
         Video videoById = getVideoById(videoId);
 
@@ -87,7 +87,7 @@ public class VideoService {
         }
 
         videoRepository.save(videoById);
-        return VideoMapper.mapToVideoDto(videoById);
+        return VideoMapper.mapToVideoDto(videoById).getLikes();
     }
 
 

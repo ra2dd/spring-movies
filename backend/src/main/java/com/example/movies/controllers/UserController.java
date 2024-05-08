@@ -25,4 +25,9 @@ public class UserController {
     public void subscribeToUser(@PathVariable String username) {
         userService.subscribeUser(username);
     }
+
+    @GetMapping("/isVideoLiked")
+    public boolean isVideoLiked(String videoId) {
+        return userService.doUserLikedVideo(videoId);
+    }
 }
