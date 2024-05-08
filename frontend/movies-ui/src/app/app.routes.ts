@@ -16,7 +16,7 @@ export const routes: Routes = [
     title: 'Save Video Details'
   },
   {
-    path: 'video-details/:videoId',
+    path: ':videoId',
     component: VideoDetailComponent,
     title: 'Video Details',
   }

@@ -8,6 +8,14 @@
       <li *ngFor="let tag of tags">{{ tag }}</li>
     </ul>
     <p>{{ viewCount }} views</p>
+
+    <p>{{ likes }} likes</p>
+    @if (isvideoLiked == false) {
+      <button (click)="likeVideo()">Like</button>  
+    } @else {
+      <button (click)="likeVideo()">Liked</button>
+    }
+    
   </section>  
 </div>
 

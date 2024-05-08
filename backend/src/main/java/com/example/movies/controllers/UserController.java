@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/isVideoLiked")
-    public boolean isVideoLiked(String videoId) {
+    public boolean isVideoLiked(@RequestParam(name = "id") String videoId) {
         return userService.doUserLikedVideo(videoId);
     }
 }

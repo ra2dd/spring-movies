@@ -19,10 +19,12 @@ export class VideoDetailComponent {
   videoId: string = '';
   title: string = '';
   description: string = '';
+  likes: number = 0;
   tags: string[] = [];
   videoUrl: string = '';
   viewCount: number = 0;
 
+  isvideoLiked: boolean = false;
   videoService = inject(VideoService);
 
   constructor(
@@ -35,9 +37,20 @@ export class VideoDetailComponent {
       // @ts-ignore
       this.tags = data.tags;
       this.videoUrl = data.videoUrl;
+      this.likes = data.likes;
     })
     this.videoService.postViewed(this.videoId).subscribe(data => {
       this.viewCount = data;
+    })
+    this.videoService.getIsVideoLikedByUser(this.videoId).subscribe(data => {
+      this.isvideoLiked = data;
+    })
+  }
+
+  likeVideo() {
+    this.videoService.postLike(this.videoId).subscribe(data => {
+      this.likes = data;
+      this.isvideoLiked = !this.isvideoLiked;
     })
   }
 }

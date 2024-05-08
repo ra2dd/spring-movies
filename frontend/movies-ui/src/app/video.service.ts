@@ -41,4 +41,12 @@ export class VideoService {
   postViewed(videoId: string): Observable<number> {
     return this.httpClient.post<number>(`http://localhost:8080/api/videos/${videoId}/viewed`, null);
   }
+
+  postLike(videoId: string): Observable<number> {
+    return this.httpClient.post<number>(`http://localhost:8080/api/videos/${videoId}/like`, null)
+  }
+
+  getIsVideoLikedByUser(videoId: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(`http://localhost:8080/api/user/isVideoLiked?id=${videoId}`)
+  }
 }

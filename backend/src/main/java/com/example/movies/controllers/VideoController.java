@@ -56,9 +56,4 @@ public class VideoController {
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Test");
     }
-
-    @GetMapping("/goodbye")
-    public ResponseEntity<String> sayGoodbye() {
-        return ResponseEntity.ok("Goodbye from API.");
-    }
 }
