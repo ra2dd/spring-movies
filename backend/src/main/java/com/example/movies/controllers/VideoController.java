@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/videos")
 @RequiredArgsConstructor
@@ -55,7 +57,8 @@ public class VideoController {
     }
 
     @GetMapping
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Test");
+    @ResponseStatus(HttpStatus.OK)
+    public List<VideoDto> getVideos() {
+        return videoService.getVideos();
     }
 }

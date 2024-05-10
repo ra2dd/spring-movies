@@ -7,6 +7,7 @@ import com.example.movies.models.User;
 import com.example.movies.models.Video;
 import com.example.movies.repositories.CommentRepository;
 import com.example.movies.repositories.VideoRepository;
+import com.example.movies.utils.UserUtil;
 import com.example.movies.utils.VideoUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,7 @@ import java.util.List;
 public class CommentService {
 
     private final VideoUtil videoUtil;
-
-    private final UserService userService;
+    private final UserUtil userUtil;
 
     private final CommentRepository commentRepository;
     private final VideoRepository videoRepository;
@@ -27,7 +27,7 @@ public class CommentService {
     private final CommentMapper commentMapper;
 
     public CommentDto addComment(String videoId, String commentContent) {
-        User currentUser = userService.getCurrentUser();
+        User currentUser = userUtil.getCurrentUser();
 
         // TODO: make comment content validation
         Comment comment = new Comment();

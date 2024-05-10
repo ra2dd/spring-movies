@@ -19,7 +19,7 @@ public class VideoDto {
     private String id;
     private String title;
     private String description;
-    private String userId;
+    private String username;
     private Integer likes;
 //    private Integer dislikes;
     private Set<String> tags;

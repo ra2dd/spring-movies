@@ -2,20 +2,25 @@ package com.example.movies.services;
 
 import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
+import com.example.movies.mappers.UserMapper;
 import com.example.movies.mappers.VideoMapper;
 import com.example.movies.models.Video;
 import com.example.movies.repositories.UserRepository;
 import com.example.movies.repositories.VideoRepository;
+import com.example.movies.utils.UserUtil;
 import com.example.movies.utils.VideoUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class VideoService {
 
     private final VideoUtil videoUtil;
+    private final UserUtil userUtil;
 
     private final S3Service s3Service;
     private final UserService userService;
@@ -23,12 +28,15 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final UserRepository userRepository;
 
+    private final VideoMapper videoMapper;
+
     public UploadVideoResponse uploadVideo(MultipartFile multipartFile) {
         // upload file to storage and save video data to database
 
         String videoUrl = s3Service.uploadFile(multipartFile);
         var video = new Video();
         video.setVideoUrl(videoUrl);
+        video.setUserId(userUtil.getCurrentUser().getId());
 
         var savedVideo = videoRepository.save(video);
         return new UploadVideoResponse(savedVideo.getId(), savedVideo.getVideoUrl());
@@ -67,7 +75,7 @@ public class VideoService {
 
     public VideoDto getVideoDetails(String videoId) {
         Video savedVideo = videoUtil.getVideoById(videoId);
-        return VideoMapper.mapToVideoDto(savedVideo);
+        return videoMapper.mapToVideoDto(savedVideo);
     }
 
 
@@ -86,7 +94,7 @@ public class VideoService {
         }
 
         videoRepository.save(videoById);
-        return VideoMapper.mapToVideoDto(videoById).getLikes();
+        return videoMapper.mapToVideoDto(videoById).getLikes();
     }
 
 
@@ -102,6 +110,11 @@ public class VideoService {
         videoRepository.save(videoById);
 
         userService.addVideoToUserVideoHistory(videoId);
-        return VideoMapper.mapToVideoDto(videoById).getViewCount();
+        return videoMapper.mapToVideoDto(videoById).getViewCount();
+    }
+
+    public List<VideoDto> getVideos() {
+        return videoRepository.findAll().stream()
+                .map(videoMapper::mapToVideoDto).toList();
     }
 }

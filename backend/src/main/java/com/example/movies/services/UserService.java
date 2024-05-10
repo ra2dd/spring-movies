@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,6 +22,8 @@ public class UserService {
 
     @Value("${auth0.userInfoEndpoint}")
     private String userInfoEndpoint;
+
+    private final UserUtil userUtil;
 
     private final UserRepository userRepository;
 
@@ -64,36 +64,25 @@ public class UserService {
         }
     }
 
-    public User getCurrentUser() {
-        Jwt jwt = (Jwt) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-
-        String sub = jwt.getClaim("sub");
-        return userRepository.findById(sub).orElseThrow(() ->
-                new IllegalArgumentException("Cannot find user with id - " + sub));
-    }
-
     public void addLikedVideoToUser(String videoId) {
-        User currentUser = getCurrentUser();
+        User currentUser = userUtil.getCurrentUser();
         currentUser.addVideoToLikedVideos(videoId);
         userRepository.save(currentUser);
     }
 
     public void removeLikedVideoFromUser(String videoId) {
-        User currentUser = getCurrentUser();
+        User currentUser = userUtil.getCurrentUser();
         currentUser.removeVideoFromLikedVideos(videoId);
         userRepository.save(currentUser);
     }
 
     public boolean isVideoAlreadyLiked(String videoId) {
-        return getCurrentUser().getLikedVideos().stream().anyMatch(
+        return userUtil.getCurrentUser().getLikedVideos().stream().anyMatch(
                 likedVideo -> likedVideo.equals(videoId));
     }
 
     public void addVideoToUserVideoHistory(String videoId) {
-        User currentUser = getCurrentUser();
+        User currentUser = userUtil.getCurrentUser();
         currentUser.addVideoToVideoHistory(videoId);
         userRepository.save(currentUser);
     }
@@ -105,7 +94,7 @@ public class UserService {
     }
 
     public void subscribeUser(String username) {
-        User currentUser = getCurrentUser();
+        User currentUser = userUtil.getCurrentUser();
         User beingSubbedToUser = userRepository.findByUsername(username);
 
         if (doUserAlreadySubscribed(currentUser, beingSubbedToUser)) {
@@ -121,7 +110,7 @@ public class UserService {
     }
 
     public boolean doUserLikedVideo(String videoId) {
-        User currentUser = getCurrentUser();
+        User currentUser = userUtil.getCurrentUser();
         return currentUser.getLikedVideos().stream().anyMatch(
                 likedVideoId -> likedVideoId.equals(videoId)
         );
