@@ -11,6 +11,8 @@ import com.example.movies.utils.VideoUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -21,6 +23,8 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final VideoRepository videoRepository;
+
+    private final CommentMapper commentMapper;
 
     public CommentDto addComment(String videoId, String commentContent) {
         User currentUser = userService.getCurrentUser();
@@ -35,6 +39,20 @@ public class CommentService {
         videoById.addComment(comment.getId());
         videoRepository.save(videoById);
 
-        return CommentMapper.mapToCommentDto(comment, currentUser.getUsername());
+        return commentMapper.mapToCommentDto(comment);
+    }
+
+    public List<CommentDto> getComments(String videoId) {
+        Video videoById = videoUtil.getVideoById(videoId);
+
+        return videoById.getCommentList().stream().map(
+                commentId -> commentMapper.mapToCommentDto(getCommentById(commentId))
+        ).toList();
+    }
+
+    private Comment getCommentById(String commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("Cannot find comment by id:" + commentId)
+        );
     }
 }

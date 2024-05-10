@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class VideoController {
 
     private final VideoService videoService;
-    private final CommentService commentService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,12 +52,6 @@ public class VideoController {
     @ResponseStatus(HttpStatus.OK)
     public Integer videoViewed(@PathVariable String videoId) {
         return videoService.makeVideoViewed(videoId);
-    }
-
-    @PostMapping("/{videoId}/comment")
-    @ResponseStatus(HttpStatus.OK)
-    public CommentDto postComment(@PathVariable String videoId, String commentContent) {
-        return commentService.addComment(videoId, commentContent);
     }
 
     @GetMapping

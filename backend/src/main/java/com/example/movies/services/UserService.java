@@ -3,6 +3,7 @@ package com.example.movies.services;
 import com.example.movies.dtos.UserInfoDto;
 import com.example.movies.models.User;
 import com.example.movies.repositories.UserRepository;
+import com.example.movies.utils.UserUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
