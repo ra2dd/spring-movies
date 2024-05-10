@@ -6,6 +6,7 @@ import com.example.movies.mappers.VideoMapper;
 import com.example.movies.models.Video;
 import com.example.movies.repositories.UserRepository;
 import com.example.movies.repositories.VideoRepository;
+import com.example.movies.utils.VideoUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class VideoService {
+
+    private final VideoUtil videoUtil;
 
     private final S3Service s3Service;
     private final UserService userService;
@@ -32,7 +35,7 @@ public class VideoService {
     }
 
     public UploadVideoResponse uploadThumbnail(MultipartFile file, String videoId) {
-        Video editedVideo = getVideoById(videoId);
+        Video editedVideo = videoUtil.getVideoById(videoId);
         String thumbnailUrl = s3Service.uploadFile(file);
 
         editedVideo.setThumbnailUrl(thumbnailUrl);
@@ -43,7 +46,7 @@ public class VideoService {
 
     public VideoDto editVideo(VideoDto videoDto) {
         // Find the video by id
-        Video editedVideo = getVideoById(videoDto.getId());
+        Video editedVideo = videoUtil.getVideoById(videoDto.getId());
 
         System.out.println(editedVideo);
 
@@ -61,20 +64,16 @@ public class VideoService {
         return videoDto;
     }
 
-    Video getVideoById(String videoId) {
-        return videoRepository.findById(videoId).orElseThrow(
-                () -> new IllegalArgumentException("Cannot find video by id: " + videoId));
-    }
 
     public VideoDto getVideoDetails(String videoId) {
-        Video savedVideo = getVideoById(videoId);
+        Video savedVideo = videoUtil.getVideoById(videoId);
         return VideoMapper.mapToVideoDto(savedVideo);
     }
 
 
     public Integer likeVideo(String videoId) {
         // Get video by id
-        Video videoById = getVideoById(videoId);
+        Video videoById = videoUtil.getVideoById(videoId);
 
 
         // if video is already liked, remove a like
@@ -98,7 +97,7 @@ public class VideoService {
      */
     public Integer makeVideoViewed(String videoId) {
 
-        Video videoById = getVideoById(videoId);
+        Video videoById = videoUtil.getVideoById(videoId);
         videoById.incrementViewCount();
         videoRepository.save(videoById);
 

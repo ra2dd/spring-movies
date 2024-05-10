@@ -1,7 +1,9 @@
 package com.example.movies.controllers;
 
+import com.example.movies.dtos.CommentDto;
 import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
+import com.example.movies.services.CommentService;
 import com.example.movies.services.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class VideoController {
 
     private final VideoService videoService;
+    private final CommentService commentService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -50,6 +53,12 @@ public class VideoController {
     @ResponseStatus(HttpStatus.OK)
     public Integer videoViewed(@PathVariable String videoId) {
         return videoService.makeVideoViewed(videoId);
+    }
+
+    @PostMapping("/{videoId}/comment")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto postComment(@PathVariable String videoId, String commentContent) {
+        return commentService.addComment(videoId, commentContent);
     }
 
     @GetMapping
