@@ -3,8 +3,14 @@ import { UploadVideoComponent } from './upload-video/upload-video.component';
 import { AppComponent } from './app.component';
 import { SaveVideoDetailsComponent } from './save-video-details/save-video-details.component';
 import { VideoDetailComponent } from './video-detail/video-detail.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+    title: 'Home'
+  },
   {
     path: 'upload-video',
     component: UploadVideoComponent,
@@ -20,5 +26,4 @@ export const routes: Routes = [
     component: VideoDetailComponent,
     title: 'Video Details',
   }
-  
 ];

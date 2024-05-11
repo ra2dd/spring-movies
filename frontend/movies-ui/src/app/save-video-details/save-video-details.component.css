@@ -1,5 +1,12 @@
 :host {
   display: flex;
   justify-content: center;
+  max-width: var(--max-width);
+  margin-bottom: 3rem;
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
   gap: 4rem;
 }

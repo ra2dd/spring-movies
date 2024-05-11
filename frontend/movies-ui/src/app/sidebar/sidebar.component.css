@@ -1,0 +1,11 @@
+mat-nav-list {
+  margin-top: 0.5rem;
+}
+
+.listItemCtn {
+  display: flex;
+}
+
+mat-icon {
+  margin-right: 0.5rem;
+}
