@@ -1,14 +1,41 @@
-<main class="main">
-  <app-header />
+<!-- <mat-sidenav-container fullscreen autosize>
+  <mat-sidenav mode="side" opened>
+    <app-sidebar />
+  </mat-sidenav>
 
-  <!-- <div class="content">
-    <div>
+  <mat-sidenav-content>
+    <main class="main">
+      <app-header />
+    
+      <div id="content">
+        <router-outlet />
+      </div>
+
+      <footer>
+        Footer
+      </footer>
+    </main>
+
+    </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+
+
+
+<div id="sidenav">
+  <app-sidebar />
+</div>
+
+<div id="baseContainer">
+  <main id="mainContainer">
+    <app-header />
+  
+    <div id="contentContainer">
       <router-outlet />
     </div>
-  </div> -->
-  
-  <router-outlet />
 
-  <div>
-  </div>
-</main>
+    <footer>
+      Footer
+    </footer>
+  </main>
+</div>

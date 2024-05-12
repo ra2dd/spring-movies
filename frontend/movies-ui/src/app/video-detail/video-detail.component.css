@@ -3,7 +3,9 @@
   justify-content: center;
   gap: 4rem;
   max-width: var(--max-width);
-  margin-bottom: 3rem;
+
+  padding: 1rem;
+  height: max-content;
 }
 
 .player-ctn-left section {
@@ -13,8 +15,3 @@
 h2 {
   margin-bottom: 0.5rem;
 }
-
-
-
-
-

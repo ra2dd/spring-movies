@@ -1,12 +1,13 @@
 :host {
+  flex-grow: 1;
+  max-width: var(--max-width-form);
+
   display: flex;
-  justify-content: center;
-  max-width: var(--max-width);
-  margin-bottom: 3rem;
 }
 
 .mainContainer {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 4rem;
 }

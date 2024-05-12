@@ -17,13 +17,13 @@ export const routes: Routes = [
     title: 'Upload Video'
   },
   {
-    path: 'save-video-details/:videoId',
-    component: SaveVideoDetailsComponent,
-    title: 'Save Video Details'
-  },
-  {
     path: ':videoId',
     component: VideoDetailComponent,
     title: 'Video Details',
+  },
+  {
+    path: ':videoId/edit',
+    component: SaveVideoDetailsComponent,
+    title: 'Save Video Details'
   }
 ];

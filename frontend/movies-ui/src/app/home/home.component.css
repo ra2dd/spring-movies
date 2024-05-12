@@ -1,25 +1,4 @@
 :host {
-  flex-grow: 1;
-  width: 100%;
-  
-
-  align-self: flex-start;
+  max-width: var(--max-width);
   background-color: orange;
-
-  display: flex;
-  flex-direction: column;
 }
-
-mat-sidenav-container {
-  /* height: 100vh; */
-  flex-grow: 1;
-}
-
-/* .example-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #eee;
-} */

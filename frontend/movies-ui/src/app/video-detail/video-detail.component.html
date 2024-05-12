@@ -1,5 +1,9 @@
 <div class="player-ctn-left">
-  <app-video-player *ngIf="videoUrl" [videoUrl]="videoUrl"/>
+  <div>
+    @if (videoUrl) {
+      <app-video-player *ngIf="videoUrl" [videoUrl]="videoUrl"/>
+    }
+  </div>
 
   <section>
     <h2>{{ title }}</h2>
