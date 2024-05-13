@@ -1,0 +1,13 @@
+<mat-card class="card">
+  @if (videoDtoCard.thumbnailUrl) {
+    <img mat-card-image [src]="videoDtoCard.thumbnailUrl" alt="Photo of a Shiba Inu">
+  } @else {
+    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+  }
+
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{ videoDtoCard.title }}</mat-card-title>
+    <mat-card-subtitle>{{ videoDtoCard.username }}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>

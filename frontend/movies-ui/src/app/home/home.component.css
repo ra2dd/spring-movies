@@ -1,4 +1,15 @@
 :host {
   max-width: var(--max-width);
-  background-color: orange;
+}
+
+.videoCardCtn {
+  display: flex;
+  justify-content: center;
+
+  gap: 2rem 1rem;
+  flex-wrap: wrap;
+}
+
+a {
+  all: unset;
 }

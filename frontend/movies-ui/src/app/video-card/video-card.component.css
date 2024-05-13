@@ -1,0 +1,27 @@
+.card {
+  width: 230px;
+  height: 100%;
+}
+
+.card img {
+  object-fit: cover;
+  width: 230px;
+  height: 150px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+mat-card-title {
+  max-height: 75px;
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+mat-card-header {
+  padding-bottom: 0.5rem;
+}

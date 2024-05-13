@@ -43,6 +43,8 @@ h1 {
   /* centers container vertically */
   display: flex;
   justify-content: center;
+
+  padding: 1rem;
 } 
 
 footer {

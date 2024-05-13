@@ -49,4 +49,8 @@ export class VideoService {
   getIsVideoLikedByUser(videoId: string): Observable<boolean> {
     return this.httpClient.get<boolean>(`http://localhost:8080/api/user/isVideoLiked?id=${videoId}`)
   }
+
+  getAllVideos(): Observable<Array<VideoDto>> {
+    return this.httpClient.get<Array<VideoDto>>(`http://localhost:8080/api/videos`);
+  }
 }

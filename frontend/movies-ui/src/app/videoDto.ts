@@ -2,7 +2,7 @@ export interface VideoDto {
   id: string;
   title: string;
   description: string;
-  userId: string;
+  username: string;
   likes: number;
   dislikes: number;
   tags: string[];
@@ -19,6 +19,13 @@ export interface VideoDtoDetailsForm {
   description: string;
   tags: string[];
   videoStatus: VideoStatus | string;
+}
+
+export interface VideoDtoCard {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  username: string;
 }
 
 enum VideoStatus {
