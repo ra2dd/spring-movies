@@ -34,3 +34,17 @@ enum VideoStatus {
   PRIVATE,
   UNLISTED,
 }
+
+export function mapVideoDtoArrayToVideoDtoCardArray(
+  data: VideoDto[],
+  videos: Array<VideoDtoCard>) {
+    data.forEach((video) => {
+      const videoDtoCard: VideoDtoCard = {
+        id: video.id,
+        title: video.title,
+        thumbnailUrl: video.thumbnailUrl,
+        username: video.username,
+      };
+      videos.push(videoDtoCard);
+    });
+}

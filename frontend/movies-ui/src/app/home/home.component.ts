@@ -1,15 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { VideoCardComponent } from '../video-card/video-card.component';
 import { VideoService } from '../video.service';
-import { VideoDtoCard } from '../videoDto';
-import { RouterLink } from '@angular/router';
+import { VideoDtoCard, mapVideoDtoArrayToVideoDtoCardArray } from '../videoDto';
+import { VideoBoxFullComponent } from '../video-box-full/video-box-full.component';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    VideoCardComponent,
-    RouterLink
+    VideoBoxFullComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -17,19 +16,12 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent {
   videoService = inject(VideoService);
 
+  heading: string = "All videos";
   videos: Array<VideoDtoCard> = [];
 
   constructor() {
     this.videoService.getAllVideos().subscribe(data => {
-      data.forEach((video) => {
-        const videoDtoCard: VideoDtoCard = {
-          id: video.id,
-          title: video.title,
-          thumbnailUrl: video.thumbnailUrl,
-          username: video.username,
-        };
-        this.videos.push(videoDtoCard)
-      })
+      mapVideoDtoArrayToVideoDtoCardArray(data, this.videos);
     });
   }
 }

@@ -1,0 +1,8 @@
+<h2>All videos</h2>
+<div class="videoCardCtn">
+  @for (video of videos; track video.id) {
+    <a [routerLink]="video.id">
+      <app-video-card  [videoDtoCard]="video"/>
+    </a>
+  }
+</div>
