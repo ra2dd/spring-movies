@@ -4,6 +4,7 @@ import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
 import com.example.movies.mappers.UserMapper;
 import com.example.movies.mappers.VideoMapper;
+import com.example.movies.models.User;
 import com.example.movies.models.Video;
 import com.example.movies.repositories.UserRepository;
 import com.example.movies.repositories.VideoRepository;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,8 +116,20 @@ public class VideoService {
         return videoMapper.mapToVideoDto(videoById).getViewCount();
     }
 
+
     public List<VideoDto> getVideos() {
         return videoRepository.findAll().stream()
                 .map(videoMapper::mapToVideoDto).toList();
     }
+
+    public List<VideoDto> getVideosFromSubscribedUsers() {
+        User currentUser = userUtil.getCurrentUser();
+
+        Set<String> subscribedUsersIds = currentUser.getSubscribedTo();
+        List<Video> videos = videoRepository.findByUserIdIn(subscribedUsersIds);
+        return videos.stream().map((video) ->
+            videoMapper.mapToVideoDto(video)
+        ).collect(Collectors.toList());
+    }
+
 }

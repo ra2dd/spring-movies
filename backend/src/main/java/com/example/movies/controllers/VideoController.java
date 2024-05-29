@@ -61,4 +61,10 @@ public class VideoController {
     public List<VideoDto> getVideos() {
         return videoService.getVideos();
     }
+
+    @GetMapping("/subscribed")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VideoDto> getVideosFromSubscribedUsers() {
+        return videoService.getVideosFromSubscribedUsers();
+    }
 }
