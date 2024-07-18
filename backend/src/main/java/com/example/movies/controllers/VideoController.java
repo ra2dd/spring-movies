@@ -62,6 +62,12 @@ public class VideoController {
         return videoService.getVideos();
     }
 
+    @GetMapping("/test")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("App is working");
+    }
+
     @GetMapping("/subscribed")
     @ResponseStatus(HttpStatus.OK)
     public List<VideoDto> getVideosFromSubscribedUsers() {
