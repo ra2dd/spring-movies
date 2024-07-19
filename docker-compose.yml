@@ -1,14 +1,31 @@
 services:
-  app:
+  web:
+    depends_on:
+      - api
+    build: ./frontend
+    ports:
+      - "4200:4200"
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: sync
+          
+  api:
     build: ./backend
     ports:
       - "8080:8080"
       - "5005:5005"
     environment:
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
-    volumes:
-#      - ./backend/src:/app/src
-      - ~/.m2:/root/.m2
+    # volumes:
+    #   - ./backend/src:/app/src
+    #   # Copy local maven dependencies to container
+    #   - ~/.m2:/root/.m2
     develop:
       watch:
         - path: ./backend/pom.xml
