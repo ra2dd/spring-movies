@@ -5,12 +5,13 @@ export const authConfig: PassedInitialConfig = {
   config: {
             authority: environment.authAuthority,
             redirectUrl: window.location.origin,
+            postLogoutRedirectUri: window.location.origin,
             clientId: environment.authClientId,
             scope: 'openid profile offline_access',
             responseType: 'code',
             silentRenew: true,
             useRefreshToken: true,
-            secureRoutes: [environment.interceptorSecureRoute, environment.interceptorSecureRoute2],
+            secureRoutes: [environment.interceptorSecureRoute],
             customParamsAuthRequest: {
               audience: environment.interceptorAudience,
             }

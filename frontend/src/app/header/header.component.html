@@ -2,20 +2,30 @@
   <mat-toolbar-row>
     <span>Spring movies</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>video_call</mat-icon>
-    </button>
-    <button  
-      *ngIf="isUserAuthenticated; else notAuthenticated" 
-      mat-icon-button 
-      class="example-icon" 
-      aria-label="Example icon-button with share icon"
-      (click)="logout()"
-    >
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <ng-template #notAuthenticated>
+
+    @if (isUserAuthenticated) {
+      <button mat-icon-button class="example-icon" aria-label="Upload new video icon">
+        <mat-icon>video_call</mat-icon>
+      </button>
+
+      <button  
+        mat-icon-button 
+        class="example-icon" 
+        aria-label="User profile icon"
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item class="menu-button" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </mat-menu>
+    }
+    @else {
       <button mat-raised-button (click)="login()">Login</button>
-    </ng-template>
+    }
   </mat-toolbar-row>
 </mat-toolbar>
