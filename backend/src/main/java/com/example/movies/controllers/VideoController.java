@@ -20,22 +20,28 @@ public class VideoController {
 
     private final VideoService videoService;
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<VideoDto> getVideos() {
+        return videoService.getVideos();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UploadVideoResponse uploadVideo(@RequestParam("file") MultipartFile file) {
         return videoService.uploadVideo(file);
     }
 
-    @PostMapping("/thumbnail")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UploadVideoResponse uploadThumbnail(@RequestParam("file") MultipartFile file, @RequestParam("videoId") String videoId) {
-        return videoService.uploadThumbnail(file, videoId);
-    }
-
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public VideoDto editVideoMetadata(@RequestBody VideoDto videoDto) {
         return videoService.editVideo(videoDto);
+    }
+
+    @PostMapping("/thumbnail")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UploadVideoResponse uploadThumbnail(@RequestParam("file") MultipartFile file, @RequestParam("videoId") String videoId) {
+        return videoService.uploadThumbnail(file, videoId);
     }
 
     @GetMapping("/{videoId}")
@@ -54,12 +60,6 @@ public class VideoController {
     @ResponseStatus(HttpStatus.OK)
     public Integer videoViewed(@PathVariable String videoId) {
         return videoService.makeVideoViewed(videoId);
-    }
-
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<VideoDto> getVideos() {
-        return videoService.getVideos();
     }
 
     @GetMapping("/test")

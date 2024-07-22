@@ -2,10 +2,12 @@ package com.example.movies.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
@@ -27,17 +29,36 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authz) -> authz
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(HttpMethod.GET, "/api/videos").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/videos/{videoId}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/videos/{videoId}/comments").permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(withDefaults())
+                // Don't store any user information or session data between requests
+                // In REST APIs each request should be self-contained
+                // and provide all necessary information
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                // This ensures that Spring Security applies the CORS configuration
+                // It controls which domains can make requests to your server
+                // Default configuration permits all origins
                 .cors(withDefaults())
-                .csrf(withDefaults())
-                .oauth2ResourceServer((oauth2) -> oauth2
+                // For authenticated endpoints it expects requests to
+                // include a JWT token for authentication and validates the token
+                .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(withDefaults()));
             return http.build();
     }
 
+    /**
+     * Ensures that any JWT token application processes has been issued
+     * by a trusted issuer, contains the correct audience claim
+     * and is intended for application
+     *
+     * @return a configured JwtDecoder instance
+     */
     @Bean
     JwtDecoder jwtDecoder() {
         OAuth2TokenValidator<Jwt> withAudience = new AudienceValidator(audience);
