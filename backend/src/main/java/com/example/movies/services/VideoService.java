@@ -5,6 +5,7 @@ import com.example.movies.dtos.VideoDto;
 import com.example.movies.mappers.VideoMapper;
 import com.example.movies.models.User;
 import com.example.movies.models.Video;
+import com.example.movies.models.VideoStatus;
 import com.example.movies.repositories.UserRepository;
 import com.example.movies.repositories.VideoRepository;
 import com.example.movies.utils.UserUtil;
@@ -12,7 +13,9 @@ import com.example.movies.utils.VideoUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.access.AccessDeniedException;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,19 +57,21 @@ public class VideoService {
         return new UploadVideoResponse(editedVideo.getId(), editedVideo.getThumbnailUrl());
     }
 
-    public VideoDto editVideoMetadata(String videoId, VideoDto videoDto) {
+    public VideoDto editVideoMetadata(String videoId,
+                                      VideoDto videoDto) throws AccessDeniedException {
         // Find the video by id
         Video editedVideo = videoUtil.getVideoById(videoId);
-        System.out.println(editedVideo);
+
+        // Check if the user is the owner of the video
+        if (!userService.isUserTheOwnerOfVideo(editedVideo)) {
+            throw new AccessDeniedException("You need to be the owner of the Video to edit it");
+        }
 
         // Map videoDto object to video
         editedVideo.setTitle(videoDto.getTitle());
         editedVideo.setDescription(videoDto.getDescription());
         editedVideo.setTags(videoDto.getTags());
         editedVideo.setVideoStatus(videoDto.getVideoStatus());
-        editedVideo.setThumbnailUrl(videoDto.getThumbnailUrl());
-
-        System.out.println(editedVideo);
 
         // Save video to the database
         videoRepository.save(editedVideo);

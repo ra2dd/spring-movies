@@ -2,6 +2,7 @@ package com.example.movies.services;
 
 import com.example.movies.dtos.UserInfoDto;
 import com.example.movies.models.User;
+import com.example.movies.models.Video;
 import com.example.movies.repositories.UserRepository;
 import com.example.movies.utils.UserUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -114,5 +114,10 @@ public class UserService {
         return currentUser.getLikedVideos().stream().anyMatch(
                 likedVideoId -> likedVideoId.equals(videoId)
         );
+    }
+
+    public boolean isUserTheOwnerOfVideo(Video video) {
+        User currentUser = userUtil.getCurrentUser();
+        return video.getUserId().equals(currentUser.getId());
     }
 }
