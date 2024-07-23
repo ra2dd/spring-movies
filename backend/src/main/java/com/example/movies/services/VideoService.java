@@ -2,7 +2,6 @@ package com.example.movies.services;
 
 import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
-import com.example.movies.mappers.UserMapper;
 import com.example.movies.mappers.VideoMapper;
 import com.example.movies.models.User;
 import com.example.movies.models.Video;
@@ -55,10 +54,9 @@ public class VideoService {
         return new UploadVideoResponse(editedVideo.getId(), editedVideo.getThumbnailUrl());
     }
 
-    public VideoDto editVideo(VideoDto videoDto) {
+    public VideoDto editVideoMetadata(String videoId, VideoDto videoDto) {
         // Find the video by id
-        Video editedVideo = videoUtil.getVideoById(videoDto.getId());
-
+        Video editedVideo = videoUtil.getVideoById(videoId);
         System.out.println(editedVideo);
 
         // Map videoDto object to video

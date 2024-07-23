@@ -12,7 +12,7 @@ import { VideoService } from '../video.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VideoPlayerComponent } from '../video-player/video-player.component';
-import { VideoDto, VideoDtoDetailsForm } from '../videoDto';
+import { VideoDtoDetailsForm } from '../videoDto';
 
 @Component({
   selector: 'app-save-video-details',
@@ -41,7 +41,7 @@ export class SaveVideoDetailsComponent {
   saveVideoDetailsForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
-    videoStatus: new FormControl(''),
+    videoStatus: new FormControl('PUBLIC'),
   })
 
   addOnBlur = true;
@@ -124,14 +124,13 @@ export class SaveVideoDetailsComponent {
 
   saveDetails() {
     const videoDetails: VideoDtoDetailsForm = {
-      id: this.videoId,
       title: this.saveVideoDetailsForm.value.title ?? '',
       description: this.saveVideoDetailsForm.value.description ?? '',
       tags: this.tags,
-      videoStatus: this.saveVideoDetailsForm.value.videoStatus ?? '',
+      videoStatus: this.saveVideoDetailsForm.value.videoStatus ?? 'PRIVATE',
     }
 
-    this.videoService.putDetails(videoDetails).subscribe(data => {
+    this.videoService.putEditVideoMetadata(this.videoId, videoDetails).subscribe(data => {
       this._snackBar.open("Video details saved successfully", "Ok");
     })
   }

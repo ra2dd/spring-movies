@@ -1,9 +1,7 @@
 package com.example.movies.controllers;
 
-import com.example.movies.dtos.CommentDto;
 import com.example.movies.dtos.UploadVideoResponse;
 import com.example.movies.dtos.VideoDto;
-import com.example.movies.services.CommentService;
 import com.example.movies.services.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,10 +30,12 @@ public class VideoController {
         return videoService.uploadVideo(file);
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public VideoDto editVideoMetadata(@RequestBody VideoDto videoDto) {
-        return videoService.editVideo(videoDto);
+    @PutMapping("/{videoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public VideoDto editVideoMetadata(
+            @PathVariable String videoId,
+            @RequestBody VideoDto videoDto) {
+        return videoService.editVideoMetadata(videoId, videoDto);
     }
 
     @PostMapping("/thumbnail")
