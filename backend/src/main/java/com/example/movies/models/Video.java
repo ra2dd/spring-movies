@@ -27,7 +27,7 @@ public class Video {
 //    private AtomicInteger dislikes;
     private Set<String> tags;
     private String videoUrl;
-    private VideoStatus videoStatus;
+    private VideoStatus videoStatus = VideoStatus.PRIVATE;
     private AtomicInteger viewCount = new AtomicInteger(0);
     private String thumbnailUrl;
     private List<String> commentList = new CopyOnWriteArrayList<String>();
