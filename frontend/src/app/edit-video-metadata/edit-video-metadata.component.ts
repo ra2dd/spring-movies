@@ -12,10 +12,10 @@ import { VideoService } from '../video.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VideoPlayerComponent } from '../video-player/video-player.component';
-import { VideoDtoDetailsForm, VideoStatus } from '../videoDto';
+import { VideoDtoMetadataForm, VideoStatus } from '../videoDto';
 
 @Component({
-  selector: 'app-save-video-details',
+  selector: 'app-edit-video-metadata',
   standalone: true,
   imports: [
     MatSelectModule,
@@ -30,17 +30,17 @@ import { VideoDtoDetailsForm, VideoStatus } from '../videoDto';
   providers: [
     VideoService
   ],
-  templateUrl: './save-video-details.component.html',
-  styleUrl: './save-video-details.component.css'
+  templateUrl: './edit-video-metadata.component.html',
+  styleUrl: './edit-video-metadata.component.css'
 })
-export class SaveVideoDetailsComponent implements OnInit{
+export class EditVideoMetadataComponent implements OnInit{
 
   videoId: string;
   tags: string[] = [];
 
   videoService = inject(VideoService);
 
-  saveVideoDetailsForm = new FormGroup({
+  editVideoMetadataForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
     videoStatus: new FormControl(VideoStatus.PRIVATE),
@@ -64,7 +64,7 @@ export class SaveVideoDetailsComponent implements OnInit{
       // @ts-ignore
       this.tags = data.tags;
 
-      this.saveVideoDetailsForm.patchValue({
+      this.editVideoMetadataForm.patchValue({
         title: data.title,
         description: data.description,
         videoStatus: data.videoStatus,
@@ -133,16 +133,16 @@ export class SaveVideoDetailsComponent implements OnInit{
       })
   }
 
-  saveDetails() {
-    const videoDetails: VideoDtoDetailsForm = {
-      title: this.saveVideoDetailsForm.value.title ?? '',
-      description: this.saveVideoDetailsForm.value.description ?? '',
+  saveMetadata() {
+    const videoMetadata: VideoDtoMetadataForm = {
+      title: this.editVideoMetadataForm.value.title ?? '',
+      description: this.editVideoMetadataForm.value.description ?? '',
       tags: this.tags,
-      videoStatus: this.saveVideoDetailsForm.value.videoStatus ?? VideoStatus.PRIVATE,
+      videoStatus: this.editVideoMetadataForm.value.videoStatus ?? VideoStatus.PRIVATE,
     }
 
-    this.videoService.putEditVideoMetadata(this.videoId, videoDetails).subscribe(data => {
-      this._snackBar.open("Video details saved successfully", "Ok");
+    this.videoService.putEditVideoMetadata(this.videoId, videoMetadata).subscribe(data => {
+      this._snackBar.open("Video metadata saved successfully", "Ok");
     })
   }
 }

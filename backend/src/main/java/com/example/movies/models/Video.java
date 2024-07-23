@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,7 +26,7 @@ public class Video {
     private String userId;
     private AtomicInteger likes = new AtomicInteger(0);
 //    private AtomicInteger dislikes;
-    private Set<String> tags;
+    private Set<String> tags = new HashSet<String>();
     private String videoUrl;
     private VideoStatus videoStatus = VideoStatus.PRIVATE;
     private AtomicInteger viewCount = new AtomicInteger(0);

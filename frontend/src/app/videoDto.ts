@@ -13,7 +13,7 @@ export interface VideoDto {
   commentList: string[];
 }
 
-export interface VideoDtoDetailsForm {
+export interface VideoDtoMetadataForm {
   title: string;
   description: string;
   tags: string[];

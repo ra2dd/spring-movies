@@ -88,7 +88,7 @@ export class UploadVideoComponent {
       this.videoService.postVideo(file).subscribe(data => {
         // add timeout after video upload, to wait for saved changes in backend before fetching new data
         setTimeout('', 500);
-        this.router.navigateByUrl("/save-video-details/" + data.videoId);
+        this.router.navigateByUrl(`/${data.videoId}/edit`);
       });
     });
   }
