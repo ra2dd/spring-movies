@@ -1,5 +1,5 @@
 <div class="mainContainer">
-<form class="video-details-left-side" [formGroup]="saveVideoDetailsForm">
+<form class="video-metadata-left-side" [formGroup]="editVideoMetadataForm">
   <mat-form-field>
     <mat-label>Title</mat-label>
     <input matInput required="" formControlName="title">
@@ -41,12 +41,12 @@
     </mat-chip-grid>
   </mat-form-field>
 
-  <button type="submit" mat-flat-button color="primary" (click)="saveDetails()">
-    Save details
+  <button type="submit" mat-flat-button color="primary" (click)="saveMetadata()">
+    Save metadata
   </button>
 </form>
 
-<div class="video-details-right-side">
+<div class="video-metadata-right-side">
   <div class="thumbnail-form">
     <label>Thumbnail</label>
     <input type="file" (change)="onFileSelected($event)">
