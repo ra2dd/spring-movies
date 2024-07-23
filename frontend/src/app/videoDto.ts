@@ -7,7 +7,7 @@ export interface VideoDto {
   dislikes: number;
   tags: string[];
   videoUrl: string;
-  videoStatus: VideoStatus | string;
+  videoStatus: VideoStatus;
   viewCount: number;
   thumbnailUrl: string;
   commentList: string[];
@@ -27,11 +27,10 @@ export interface VideoDtoCard {
   username: string;
 }
 
-enum VideoStatus {
+export enum VideoStatus {
   // Define the possible values for VideoStatus enum here
   PUBLIC,
   PRIVATE,
-  UNLISTED,
 }
 
 export function mapVideoDtoArrayToVideoDtoCardArray(
