@@ -30,8 +30,9 @@ export class VideoService {
     return this.httpClient.post<UploadVideoReponse>("http://localhost:8080/api/videos/thumbnail", formData);
   }
 
-  putDetails(videoDetails: VideoDtoDetailsForm): Observable<VideoDto> {
-    return this.httpClient.put<VideoDto>("http://localhost:8080/api/videos", videoDetails);
+  putEditVideoMetadata(videoId: string, 
+                       videoDetails: VideoDtoDetailsForm): Observable<VideoDto> {
+    return this.httpClient.put<VideoDto>(`http://localhost:8080/api/videos/${videoId}`, videoDetails);
   }
 
   getVideoData(videoId: string): Observable<VideoDto> {
