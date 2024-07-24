@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-header',
@@ -20,23 +20,19 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class HeaderComponent {
 
   isUserAuthenticated: boolean = false;
-  private readonly oidcSecurityService = inject(OidcSecurityService);
+  private authService = inject(AuthService);  
   
   ngOnInit(): void {
-    this.oidcSecurityService.isAuthenticated$.subscribe( 
-      ({isAuthenticated}) => {
-        this.isUserAuthenticated = isAuthenticated;
-      }
-    )
+    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.isUserAuthenticated = isAuthenticated;
+    })
   }
 
   login() {
-    this.oidcSecurityService.authorize();
+    this.authService.login();
   }
 
   logout() {
-    this.oidcSecurityService
-      .logoff()
-      .subscribe((result) => console.log(result));
+    this.authService.logout();
   }
 }

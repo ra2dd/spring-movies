@@ -1,9 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
-import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,16 +18,11 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-
-  title = 'movies-ui';
-  private readonly oidcSecurityService = inject(OidcSecurityService);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
-    this.oidcSecurityService
-      .checkAuth()
-      .subscribe((loginResponse: LoginResponse) => {
-        const { isAuthenticated, userData, accessToken, idToken, configId } = loginResponse;
-        console.log('app is authenticated ', isAuthenticated);
-      });
+    setInterval(() => {
+      this.authService.refreshAuthStatus();
+    }, 15 * 60 * 1000); // Refresh every 15 minutes
   }
 }
