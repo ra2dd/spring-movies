@@ -4,6 +4,7 @@ import { EditVideoMetadataComponent } from './edit-video-metadata/edit-video-met
 import { VideoDetailComponent } from './video-detail/video-detail.component';
 import { HomeComponent } from './home/home.component';
 import { SubscribedVideosComponent } from './subscribed-videos/subscribed-videos.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
   {
@@ -14,12 +15,14 @@ export const routes: Routes = [
   {
     path: 'subscribed',
     component: SubscribedVideosComponent,
-    title: 'Subscribed'
+    title: 'Subscribed',
+    canActivate: [authGuard],
   },
   {
     path: 'upload-video',
     component: UploadVideoComponent,
-    title: 'Upload Video'
+    title: 'Upload Video',
+    canActivate: [authGuard],
   },
   {
     path: ':videoId',
@@ -30,5 +33,6 @@ export const routes: Routes = [
     path: ':videoId/edit',
     component: EditVideoMetadataComponent,
     title: 'Edit Video Metadata',
+    canActivate: [authGuard],
   }
 ];
