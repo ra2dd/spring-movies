@@ -7,8 +7,10 @@ import com.example.movies.repositories.UserRepository;
 import com.example.movies.utils.UserUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -24,29 +26,33 @@ public class UserService {
     private String userInfoEndpoint;
 
     private final UserUtil userUtil;
-
     private final UserRepository userRepository;
+    private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
 
-    public void registerUser(String tokenValue) {
+    @PostConstruct
+    private void init() {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    public boolean registerUser(String bearerToken) {
         // Make a call to the userInfo endpoint
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create((userInfoEndpoint)))
-                .setHeader("Authorization", String.format("Bearer %s", tokenValue))
-                .build();
-
-        HttpClient httpClient = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_2)
+                .setHeader("Authorization", String.format("Bearer %s", bearerToken))
                 .build();
 
         try {
             // Fetch user details
-            HttpResponse<String> responseString = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            String body = responseString.body();
+            HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            UserInfoDto userInfoDto = objectMapper.readValue(body, UserInfoDto.class);
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed to fetch user info, status code: "
+                        + response.statusCode());
+            }
+
+            UserInfoDto userInfoDto = objectMapper.readValue(response.body(), UserInfoDto.class);
 
             // Save user details to database
             // TODO: map givenName, familyName and photo
@@ -57,11 +63,14 @@ public class UserService {
                     .build();
 
             userRepository.save(user);
+            return true;
 
         } catch (Exception exception) {
             System.out.println(
-                    "Error occurred while sending request with bearer token to Auth provider");
+                    "Error occurred while sending request with bearer token to Auth provider: "
+                            + exception);
         }
+        return false;
     }
 
     public void addLikedVideoToUser(String videoId) {
