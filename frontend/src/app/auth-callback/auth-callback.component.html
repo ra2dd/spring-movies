@@ -1,0 +1,18 @@
+<div>
+  @switch (isUserAuthenticated) {
+    @case (registrationStatus.Checking) {
+      <p>Checking</p>
+    }
+    @case (registrationStatus.Logged) {
+      <p>Successfully Logged</p>
+      <p>Redirecting in {{ timer }}</p>
+    }
+    @case (registrationStatus.Registered) {
+      <p>Successfully Registered</p>
+      <p>Redirecting in {{ timer }}</p>
+    }
+    @case (registrationStatus.Error) {
+      <p>Error</p>
+    }
+  }
+</div>
