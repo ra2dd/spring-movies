@@ -43,6 +43,7 @@ export class AuthService {
   }
 
   public login() {
+    localStorage.setItem('originalPath', window.location.pathname)
     this.oidcSecurityService.authorize();
   }
 

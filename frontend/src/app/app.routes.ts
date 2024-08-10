@@ -5,6 +5,8 @@ import { VideoDetailComponent } from './video-detail/video-detail.component';
 import { HomeComponent } from './home/home.component';
 import { SubscribedVideosComponent } from './subscribed-videos/subscribed-videos.component';
 import { authGuard } from './auth.guard';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
+import { RedirectComponent } from './redirect/redirect.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +27,14 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'redirect',
+    component: RedirectComponent,
+  },
+  {
+    path: 'callback',
+    component: AuthCallbackComponent,
+  },
+  {
     path: ':videoId',
     component: VideoDetailComponent,
     title: 'Video Details',
@@ -34,5 +44,5 @@ export const routes: Routes = [
     component: EditVideoMetadataComponent,
     title: 'Edit Video Metadata',
     canActivate: [authGuard],
-  }
+  },
 ];
